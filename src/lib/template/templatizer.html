@@ -118,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this._prepParentProperties(archetype, template);
 
       // boilerplate code
-      archetype._notifyPath = this._notifyPathImpl;
+      archetype._notifyPathUp = this._notifyPathUpImpl;
       archetype._scopeElementClass = this._scopeElementClassImpl;
       archetype.listen = this._listenImpl;
       archetype._showHideChildren = this._showHideChildrenImpl;
@@ -290,14 +290,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // _forwardParentPath: function(path, value) { },
     // _forwardParentProp: function(prop, value) { },
 
-    _notifyPathImpl: function(path, value) {
+    _notifyPathUpImpl: function(path, value) {
       var dataHost = this.dataHost;
       var dot = path.indexOf('.');
       var root = dot < 0 ? path : path.slice(0, dot);
       // Call extension point for Templatizer sub-classes
       dataHost._forwardInstancePath.call(dataHost, this, path, value);
       if (root in dataHost._parentProps) {
-        dataHost.notifyPath(dataHost._parentPropPrefix + path, value);
+        dataHost._notifyPath(dataHost._parentPropPrefix + path, value);
       }
     },
 
